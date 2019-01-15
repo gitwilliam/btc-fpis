@@ -50,6 +50,8 @@ object Option {
     else Some(xs.foldRight(0.0)((x,y) => x + y)/xs.size)
   }
 
+
+
   // Exercise 4.3
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =  {
     if (a == None || b == None) None
@@ -58,6 +60,18 @@ object Option {
 
   // Exercise 4.4
   def sequence[A](a: List[Option[A]]): Option[List[A]] = {
-    Some(a.map(_.getOrElse(return None)))
+    //Some(a.map(_.getOrElse(return None)))
+    traverse(a)(i => i.orElse(None))
+  }
+
+  // Exercise 4.5
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+    // sequence(a.map(i => f(i)))
+    Some(a.map(i => f(i).getOrElse(return None)))
+  }
+
+  def Try[A](a: => A): Option[A] = {
+    try Some(a)
+    catch { case _: Exception => None}
   }
 }

@@ -54,4 +54,11 @@ class ChapterFourTest extends FunSuite {
     assert(Option.sequence(List(Some(1), None, Some(2))) == None)
     assert(Option.sequence(List(Some(1), Some(2), Some(3))) == Some(List(1, 2, 3)))
   }
+
+  test("def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]]") {
+    assert(Option.traverse(List("1", "2", "3"))(i => Option.Try(i.toInt)) == Some(List(1,2,3)))
+    assert(Option.traverse(List("a", "2", "3"))(i => Option.Try(i.toInt)) == None)
+    assert(Option.traverse(List("1", "a", "3"))(i => Option.Try(i.toInt)) == None)
+    assert(Option.traverse(List("1", "2", "a"))(i => Option.Try(i.toInt)) == None)
+  }
 }
